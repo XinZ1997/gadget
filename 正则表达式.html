@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>文本格式纠错(正则)</title>
+    <style>
+        p {
+            border: 1px solid black;
+            display: block;
+            float: left;
+            width: 600px;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <p id="old_text">大声道AasdA123j123ADidaj花生酱的————1————1 ？ 22</p>
+    <p id="new_text"></p>
+    <script>
+        let oldText = document.querySelector("#old_text");
+        let text = oldText.innerHTML;
+        let newText = document.querySelector("#new_text");
+        let strPunct = '！（）【】『』「」《》“”‘’；：，。？、';
+        let regPunct = strPunct.split('').join('|');
+        let reg = {
+            //中英文之间加空格
+            0: /([\u4e00-\u9fa5])([a-z])|([a-z])([\u4e00-\u9fa5])/gi,
+
+            //中文和数字之间加空格
+            1: /([\u4e00-\u9fa5])(\d)|(\d)([\u4e00-\u9fa5])/g,
+
+            //数字和单位之间加空格
+            2: /(\d)([A-Z])/g,
+
+            //全角标点与其他字符之间不加空格
+            3: new RegExp(`([${regPunct}]) +| +([${regPunct}])`, 'g'),
+
+            //标点符号不能重复
+            4: new RegExp(`(${regPunct})\\1+`, 'g'),
+
+            //破折号前后加空格
+            5: /(————)|(————)/g,
+        };
+        let correct = () => {
+            let temp = text;
+            for (i in reg) {
+                if (i < 3) {
+                    temp = temp.replace(reg[i], (match, p1, p2, p3, p4) => {
+                        if (p1) {
+                            return [p1, p2].join(' ');
+                        } else {
+                            return [p3, p4].join(' ');
+                        }
+                    });
+                }
+            }
+            temp = temp.replace(reg[3], (match, p1, p2) => {
+                if (p1) {
+                    return [p1].join('');
+                } else {
+                    return [p2].join('');
+                }
+            });
+            temp = temp.replace(reg[4], '$1');
+            temp = temp.replace(reg[5], (match, p1, p2) => {
+                return ' ' + [p1].join('') + ' ';
+            });
+            newText.innerHTML = temp;
+        };
+        correct();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>回到顶部</title>
+    <style>
+        body {
+            height: 5000px;
+        }
+
+        #backtop {
+            position: fixed;
+            right: 100px;
+            bottom: 50px;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            font-size: 20px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="backtop">回到顶部</div>
+    <script>
+        let btnBackTop = document.querySelector("#backtop");
+        let backTop = () => {
+            if (document.documentElement.scrollTop > 0) {
+                document.documentElement.scrollTop -= document.documentElement.scrollTop * 0.1;
+            } else {
+                return;
+            }
+            requestAnimationFrame(backTop);
+        };
+
+        let test = () => {
+            
+            if (document.documentElement.scrollTop > window.innerHeight) {
+                btnBackTop.style.display = 'block';
+
+            } else {
+                btnBackTop.style.display = 'none';
+            }
+            requestAnimationFrame(test);
+        }
+
+        btnBackTop.addEventListener("click", () => {
+            backTop();
+        })
+        test();
+
+    </script>
+</body>
+
+</html>
