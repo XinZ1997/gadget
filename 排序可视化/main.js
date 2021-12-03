@@ -79,6 +79,7 @@ let render = () => {
 
 let go = (sort) => {
     if (left === null && right === null) {
+        reSet.disabled = false;
         alert("已经排好了");
         return;
     }
@@ -93,24 +94,24 @@ let go = (sort) => {
             return li.offsetLeft === index * 40;
         });
         if (flag) {
-            clearInterval(timer1);
-            clearInterval(timer2);
             reSet.disabled = false;
             left = null;
             right = null;
+            clearInterval(timer1);
+            clearInterval(timer2);
         }
     }, 1000)
 }
 
 //快排
 quickSortBtn.onclick = () => {
-    go(quickSort);
     reSet.disabled = true;
+    go(quickSort);
 };
 //冒泡
 bubbleSortBtn.onclick = () => {
-    go(bubbleSort);
     reSet.disabled = true;
+    go(bubbleSort);
 };
 //选择
 chooseSortBtn.onclick = () => {
