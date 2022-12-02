@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快速排序</title>
+</head>
+<body>
+    <script type="text/javascript">
+        function quicksort(start, end) {
+            if(start >= end) return
+            let index = swap(start, end)
+            quicksort(index, end)
+            quicksort(start, index - 1)
+        }
+
+        function swap(start, end) {
+            let mid = arr[Math.ceil((start + end) / 2)]
+            while(start < end) {
+                while(arr[start] < mid) {
+                    start++
+                }
+                while(arr[end] > mid) {
+                    end--
+                }
+                let temp = arr[end]
+                arr[end] = arr[start]
+                arr[start] = temp
+            }
+            return start
+        }
+
+        let arr = new Array(100).fill(0).map(() => Math.random(0, 100) * 10000)
+        // let arr = [80, 97, 88, 91, 66, 16, 65, 49, 11, 99, 33, 55]
+        quicksort(0, arr.length - 1)
+        console.log(arr)
+    </script>
+</body>
+</html>

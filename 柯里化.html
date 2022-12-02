@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>柯里化</title>
+</head>
+<body>
+    <script type="text/javascript">
+        // fn.length是fn形参的个数
+        // pervArgs为之前传入的全部参数，初始值是[]
+        // nextArgs为当前传入的参数
+        function curry(fn, arity = fn.length) {
+            return (function curried (pervArgs) {
+                return function (nextArgs) {
+                    let args = [...pervArgs, nextArgs]
+                    if(args.length >= arity) {
+                        return fn(...args)
+                    } else {
+                        return curried(args)
+                    }
+                }
+            }) ([])
+        }
+        function test(a, b, c, d) {
+            console.log(...arguments)
+        }
+        let fn1 = curry(test)
+        let fn2 = fn1('a')
+        let fn3 = fn2('b')
+        let fn4 = fn3('c')
+        fn4('d')
+    </script>
+</body>
+</html>
